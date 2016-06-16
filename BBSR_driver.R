@@ -1,5 +1,11 @@
-source('bayesianRegression.R')
 library('Matrix')
+if ('parallel' %in% installed.packages()[, 'Package']) {
+  library('parallel')
+} else {
+  library('multicore')
+}
+
+source('bayesianRegression.R')
 
 X <- read.table('X.csv', sep = ',', header = 1, row.names = 1)
 Y <- read.table('Y.csv', sep = ',', header = 1, row.names = 1)
