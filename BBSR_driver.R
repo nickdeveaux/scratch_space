@@ -15,7 +15,7 @@ prior.mat <- read.table('priors_mat.csv', sep = ',', header = 1, row.names = 1)
 nS <- 10
 cores <- 10
 no.pr.weight <- 1
-prior.weight <- 1 # has to be larger than 1 to have an effect
+prior.weight <- 1 # prior weights has to be larger than 1 to have an effect
 
 weights.mat <- prior.mat * 0 + no.pr.weight
 weights.mat[prior.mat != 0] <- prior.weight
