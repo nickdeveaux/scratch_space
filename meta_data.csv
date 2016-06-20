@@ -84,13 +84,13 @@
 82,True,f,,,Mt0_3
 83,True,m,Mt0_3,45.0,M0t45_3
 84,True,l,M0t45_3,45.0,M0t90_3
-85,True,f,,,Mt0_1.1
+85,True,f,,,Mt0_1
 86,True,m,Mt0_1,45.0,M40t45_1
 87,True,l,M40t45_1,45.0,M40t90_1
-88,True,f,,,Mt0_2.1
+88,True,f,,,Mt0_2
 89,True,m,Mt0_2,45.0,M40t45_2
 90,True,l,M40t45_2,45.0,M40t90_2
-91,True,f,,,Mt0_3.1
+91,True,f,,,Mt0_3
 92,True,m,Mt0_3,45.0,M40t45_3
 93,True,l,M40t45_3,45.0,M40t90_3
 94,True,f,,,dia0_1
