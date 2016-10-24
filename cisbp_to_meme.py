@@ -1,5 +1,25 @@
 #!/usr/bin/python
 
+# Author: Nick De Veaux
+# This script uses the MIT licensed gscripts from UCSD's Yeo Lab for parsing pwms
+
+# This script creates a meme formatted flat file database for motifs from cisbp, transfac and encode databases
+# Some non-obvious decisions that were made: 
+#   - Motifs can map to multiple TFs. If they do, the data field after the motif name has the comma seperated TF names
+#   - Encode motifs are only removed as duplicates if their PWM has a .95 correlation with a PWM for the same TF
+#       Unlike the encode 2013 paper, where the cutoff was .75 and offsets were used to search for duplicates of different lengths
+#   - Motifs whose TF name is not in the complete human gene list have been removed
+#       This was a hard decision, because it removes prefix-style TF symbols like "RAR", 
+#        but there was no clean automatable way to map them,
+#        and the number of TFs we would gain motifs for represented approx 1-2% of all TFs,
+#        so the gains were considered marginal at the cost of potentially introducing incorrect TF to motif links. 
+
+# Reference Data Files:
+# TF class was used as the canonical source of human TFs (http://www.edgar-wingender.de/huTF_classification.html)
+# combined with the GO annotations of DNA binding proteins (http://geneontology.org/page/download-annotations)
+# CisBP 2016 (v1.02) motifs were downloaded from http://cisbp.ccbr.utoronto.ca/bulk.php
+# Encode motifs came from http://compbio.mit.edu/encode-motifs/motifs.txt
+
 import argparse
 import os
 from string import Template
