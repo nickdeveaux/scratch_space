@@ -68,4 +68,13 @@ cores=$(~carriero/bin/nprocNoHT)
 
 cat $wd/job.txt | xargs -I CMD -P $cores bash -c CMD
 
+log "Finished running fimo search, outputting txt files"
+# convert motif outputs to bedfiles
+for f in $wd/motifs/*.txt; do
+  motif=$(basename $f .txt)
+  bed=$motif.bed
+  awk -F'\t' 'NR>1 {print $2"\t"$3"\t"$4"\t"$1"\t"$7"\t"$6}' $f > $wd/motifs/$bed
+done
+
+
 mv "$wd/motifs" $outDir
