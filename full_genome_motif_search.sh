@@ -52,14 +52,20 @@ grep "MOTIF " ${motifDirectory}/${database}.meme | awk '{print $2}' > ${motifLin
 
 # GNU parallel's author requires attribution.
 log "running FIMO on ${database}"
-fimo \
+for motif in $(cat ${motifLines}); do         echo "fimo \
                 --parse-genomic-coord \
                 --thresh .0001 \
-                —-text \
+                --text \
                 --bgfile ${localBkgFile} \
                 --verbosity 1 \
+                --motif ${motif} \
                 ${motifDirectory}/${database}.meme \
-                ${fastaInput} > $wd/output.txt  \
-                2>  $wd/log.err
+                ${fastaInput} > $wd/motifs/${motif// /_}.txt  \
+                2>  $wd/motifs/${motif// /_}.err"
+done > $wd/job.txt
 
+cores=$(~carriero/bin/nprocNoHT)
 
+cat $wd/job.txt | xargs -I CMD -P $cores bash -c CMD
+
+mv "$wd/motifs" $outDir
