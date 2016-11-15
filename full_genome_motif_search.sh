@@ -1,9 +1,17 @@
-outDir=/mnt/ceph/users/ndeveaux/reference/motif_cache_mm10
-peaks=mouse_ATAC_bkgrnd_peaks
-database=mouse_2016
-localBkgFile=${finalOutputFolder}/mm10_Littman_ATAC_samples_bkgrd_Order1.txt
+# This script finds all motif hits across the genome for either hg38 or mm10
 
-fastaInput=/mnt/xfs1/bioinfo/data/Illumina/Mus_musculus/UCSC/mm10/Sequence/Bowtie2Index/genome.fa
+fastaInput="/mnt/ceph/users/ndeveaux/reference/genome-versions/gencode24/GRCh38.primary_assembly.genome.fa"
+outDir=/mnt/ceph/users/ndeveaux/reference/motif_cache_hg38
+database=hg19_2016
+peaks=human_bkgrnd_from_DC_ATAC_peaks
+localBkgFile=/mnt/xfs1/home/ndeveaux/hiv-dc/data/atac_output/2016_10_23_qc_bfsw_out/peakdeck/peakdeck_75bps_10kb/all_peaks_merged_bkgrd_Order1.txt
+
+# outDir=/mnt/ceph/users/ndeveaux/reference/motif_cache_mm10
+# peaks=mouse_ATAC_bkgrnd_peaks
+# database=mouse_2016
+# fastaInput=/mnt/xfs1/bioinfo/data/Illumina/Mus_musculus/UCSC/mm10/Sequence/Bowtie2Index/genome.fa
+# localBkgFile=/mnt/ceph/users/ndeveaux/reference/motif_cache_mm10/mouse_ATAC_bkgrnd_peaks/mouse_2016/mm10_Littman_ATAC_samples_bkgrd_Order1.txt
+
 export PATH=/mnt/xfs1/bioinfoCentos7/software/installs/bedtools/bedtools-2.25.0/bedtools:$PATH
 memehome="/mnt/xfs1/bioinfoCentos7/software/installs/meme/4.10.1/bin"
 export PATH=$memehome:$PATH
@@ -14,11 +22,10 @@ function log {
 
 log "working with ${database} database"
 
-finalOutputFolder=${outDir}/${peaks}/${database}
-mkdir -p ${outDir}/${peaks}
-mkdir -p ${finalOutputFolder}
-
-localBkgFile=${finalOutputFolder}/mm10_Littman_ATAC_samples_bkgrd_Order1.txt
+# Archive the background file
+bkgrdFolder=${outDir}/${peaks}
+mkdir -p $bkgrdFolder
+cp $localBkgFile $bkgrdFolder
 
 motifDirectory="/mnt/hdfs/emiraldi/motif_databases"
 bgOrder="1"
@@ -76,5 +83,7 @@ for f in $wd/motifs/*.txt; do
   awk -F'\t' 'NR>1 {print $2"\t"$3"\t"$4"\t"$1"\t"$7"\t"$6}' $f > $wd/motifs/$bed
 done
 
+log "Rsyncing results"      
+rsync -av motifs ${outDir}/
 
-mv "$wd/motifs" $outDir
+log "Done"
