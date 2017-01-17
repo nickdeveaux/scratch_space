@@ -33,7 +33,7 @@ mkdir outBound
 mkdir references
 
 for tssDistance in ${tssDistances[@]}; do
-    bedtools slop -b tssDistance -i $baseGenomeInfDir/tss_mm10.bed -g $baseGenomeInfDir/mm10.chrom.sizes > references/${tssDistance}_tss_mm10.bed
+    bedtools slop -b $tssDistance -i $baseGenomeInfDir/tss_mm10.bed -g $baseGenomeInfDir/mm10.chrom.sizes > references/${tssDistance}_tss_mm10.bed
 done
 cp $baseGenomeInfDir/genebodies_mm10_bp10000.bed references
 
